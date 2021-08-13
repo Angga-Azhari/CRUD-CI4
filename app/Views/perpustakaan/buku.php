@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <br><br>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">+ Tambah Data</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal-tambah">+ Tambah Data</button>
         <br><br>
         <table class="table table-dark table-striped">
             <tr>
@@ -22,6 +22,7 @@
                 <th>Judul Buku</th>
                 <th>Stok</th>
                 <th>Harga</th>
+                <th>Aksi</th>
             </tr>
             <?php $no = 1;
             foreach ($dataBuku as $row) : ?>
@@ -31,20 +32,24 @@
                     <td><?= $row->buku; ?> </td>
                     <td><?= $row->stok; ?> </td>
                     <td>RP.<?= $row->harga; ?></td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal-edit" <?= $row->kode_buku; ?>>Edit</button>
+                        <a class="btn btn-sm btn-danger" onclick="return confirm('Apakah Data Ingin Di Hapus?')"  href="<?php echo base_url('buku/hapus'); ?>/<?= $row->kode_buku; ?>">hapus</a>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </table>
 
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal-tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">New message</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="<?php echo base_url('buku/simpan'); ?>" method="POST">
-                <div class="modal-body">   
+                <form action="<?php echo base_url('buku/simpan'); ?>" method="POST" class="form-horizontal">
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label class="col-form-label">kode buku</label>
                             <input type="text" class="form-control" id="kodebuku" name="kodebuku" placeholder="kode buku">
@@ -64,16 +69,59 @@
                             <label class="col-form-label">Harga</label>
                             <input type="number" class="form-control" id="harga" name="harga" placeholder="Harga">
                         </div>
-                       
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Send message</button>
-                </div>
-                </form> 
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">tutup</button>
+                        <button type="submit" class="btn btn-primary">masuk</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <?php $no = 1;
+            foreach ($dataBuku as $row) : ?>
+    <div class="modal fade" id="Modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?php echo base_url('buku/edit'); ?>" method="POST" class="form-horizontal">
+                    <div class="modal-body">
+                    <input type="hidden"  value="<?= $row->id_buku; ?>" name="id_buku" >
+                        <div class="mb-3">
+                            <label class="col-form-label">kode buku</label>
+                            <input value="<?= $row->kode_buku; ?>" type="text" class="form-control"  name="kodebuku" placeholder="kode buku">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label">Judul Buku</label>
+                            <input value="<?= $row->buku; ?>" type="text" class="form-control"  name="buku" placeholder="Judul Buku">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label">Stok</label>
+                            <input  value="<?= $row->stok; ?>" type="number" class="form-control" name="stok" placeholder="Stok">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label">Harga</label>
+                            <input  value="<?= $row->harga; ?>" type="number" class="form-control" name="harga" placeholder="Harga">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">tutup</button>
+                        <button type="submit" class="btn btn-primary">edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endforeach?>
 
 </body>
 
